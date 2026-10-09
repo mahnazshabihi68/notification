@@ -8,11 +8,17 @@ import (
 	"practice/service"
 )
 
-type NotificationHandler struct {
-	svc *service.Notification
+type NotificationService interface {
+	SendEmail(to, message string) error
+	SendSMS(to, message string) error
+	List() []service.SentMessage
 }
 
-func NewNotification(svc *service.Notification) *NotificationHandler {
+type NotificationHandler struct {
+	svc NotificationService
+}
+
+func NewNotification(svc NotificationService) *NotificationHandler {
 	return &NotificationHandler{svc: svc}
 }
 
