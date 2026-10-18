@@ -4,6 +4,6 @@ type NotificationService interface {
 	Send(to string, message string) error
 }
 
-type SenderService interface {
+type NotificationRepository interface {
 	Send(to string, message string) error
 }

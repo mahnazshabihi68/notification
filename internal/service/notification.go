@@ -7,10 +7,10 @@ import (
 )
 
 type NotificationService struct {
-	sender port.SenderService
+	sender port.NotificationRepository
 }
 
-func NewNotificationService(sender port.SenderService) *NotificationService {
+func NewNotificationService(sender port.NotificationRepository) *NotificationService {
 	return &NotificationService{sender: sender}
 }
 
