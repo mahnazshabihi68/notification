@@ -3,24 +3,24 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"practice/internal/application"
-	"practice/internal/domain"
+	"practice/internal/dto"
+	"practice/internal/port"
 )
 
 type NotificationHandler struct {
-	notificationApplication application.NotificationApplication
+	notificationService port.NotificationService
 }
 
-func NewNotificationHandler(notification application.NotificationApplication) *NotificationHandler {
-	return &NotificationHandler{notificationApplication: notification}
+func NewNotificationHandler(notification port.NotificationService) *NotificationHandler {
+	return &NotificationHandler{notificationService: notification}
 }
 
 func (h *NotificationHandler) SendEmail(w http.ResponseWriter, r *http.Request) {
-	h.send(w, r, h.notificationApplication.Send)
+	h.send(w, r, h.notificationService.Send)
 }
 
 func (h *NotificationHandler) send(w http.ResponseWriter, r *http.Request, deliver func(to, message string) error) {
-	var req domain.SendRequest
+	var req dto.SendRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "invalid request body", http.StatusBadRequest)
 		return

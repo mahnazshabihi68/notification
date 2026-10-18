@@ -1,20 +1,13 @@
-package cmd
+package main
 
 import (
 	"log"
 	"net/http"
-	"practice/api"
-	"practice/internal/handler"
-	"practice/internal/infra/adapter/email"
-	"practice/internal/service"
+
+	"practice/internal/application"
 )
 
 func main() {
-	srv := service.NewNotificationService(email.NewSender())
-	h := handler.NewNotificationHandler(srv)
-	routes := api.NewRoute(h)
-
-	mux := http.NewServeMux()
-	routes.Register(mux)
-	log.Fatal(http.ListenAndServe("8080", mux))
+	mux := application.New()
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
