@@ -1,23 +1,25 @@
 package service
 
 import (
-	"errors"
 	"practice/internal/domain"
-	"practice/internal/port"
+	"practice/internal/port/in"
+	"practice/internal/port/out"
 )
 
+var _ in.NotificationService = (*NotificationService)(nil)
+
 type NotificationService struct {
-	sender port.NotificationRepository
+	sender out.NotificationSender
 }
 
-func NewNotificationService(sender port.NotificationRepository) *NotificationService {
+func NewNotificationService(sender out.NotificationSender) *NotificationService {
 	return &NotificationService{sender: sender}
 }
 
 func (n *NotificationService) Send(to string, message string) error {
 	notification := domain.Notification{To: to, Message: message}
 	if notification.IsEmpty() {
-		return errors.New("to and message are required")
+		return domain.ErrInvalidNotification
 	}
 	return n.sender.Send(to, message)
 }

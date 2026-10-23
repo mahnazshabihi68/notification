@@ -1,13 +1,21 @@
 package main
 
 import (
+	"context"
 	"log"
-	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"practice/internal/application"
 )
 
 func main() {
-	mux := application.New()
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	app := application.New(":8081")
+	if err := app.Run(ctx); err != nil {
+		log.Fatal(err)
+	}
 }

@@ -1,6 +1,6 @@
-package dto
+package request
 
-type SendRequest struct {
+type SendNotification struct {
 	To      string `json:"to"`
 	Message string `json:"message"`
 }
